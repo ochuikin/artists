@@ -6,29 +6,29 @@ import android.view.View;
 import serversyncdemo.olegbabichev.com.artists.MainActivity;
 
 /**
- * Created by olegchuikin on 13/04/16.
+ * Created by obabichev on 13/04/16.
  */
 public abstract class BaseFragment extends Fragment {
 
-    public void applyFragment(BaseFragment baseFragment){
+    public void applyFragment(BaseFragment baseFragment) {
         MainActivity ma = (MainActivity) getActivity();
-        if (ma == null){
+        if (ma == null) {
             return;
         }
         ma.applyFragment(baseFragment);
     }
 
-    protected void finish(){
+    protected void finish() {
         MainActivity ma = (MainActivity) getActivity();
-        if (ma == null){
+        if (ma == null) {
             return;
         }
         ma.finishFragment();
     }
 
-    protected View findViewById(int id){
+    protected View findViewById(int id) {
         MainActivity ma = (MainActivity) getActivity();
-        if (ma == null){
+        if (ma == null) {
             return null;
         }
         return ma.findViewById(id);
@@ -40,8 +40,8 @@ public abstract class BaseFragment extends Fragment {
         super.onResume();
     }
 
-    protected String getTitle(){
-        return ((MainActivity)getActivity()).getTitle().toString();
+    protected String getTitle() {
+        return ((MainActivity) getActivity()).getTitle().toString();
     }
 
 }

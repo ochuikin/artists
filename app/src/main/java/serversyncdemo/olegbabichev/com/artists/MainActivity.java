@@ -9,6 +9,8 @@ import serversyncdemo.olegbabichev.com.artists.fragments.BaseFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String JSON_ARTISTS_URL = "http://download.cdn.yandex.net/mobilization-2016/artists.json";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
