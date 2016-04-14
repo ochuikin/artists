@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class ArtistsAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.artist_list_item_layout, null, true);
             holder = new ViewHolder();
             holder.coverSmall = (ImageView) view.findViewById(R.id.artist_cover_small);
+            holder.progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
             holder.name = (TextView) view.findViewById(R.id.artist_name);
             holder.genres = (TextView) view.findViewById(R.id.artist_genres);
             holder.songNumber = ((TextView) view.findViewById(R.id.artist_song_number));
@@ -71,12 +73,15 @@ public class ArtistsAdapter extends BaseAdapter {
         holder.songNumber.setText(tracksNumberFormat(artist.getAlbums(), artist.getTracks()));
 
         String imgUrl = artist.getCover().getSmall();
-        if (BitmapsStorage.data.containsKey(imgUrl)){
+        boolean isPictureDownloaded = BitmapsStorage.data.containsKey(imgUrl);
+        if (isPictureDownloaded){
             holder.coverSmall.setImageBitmap(BitmapsStorage.data.get(imgUrl));
             Log.i("ArtistsAdapter", "Picture already downloaded");
         } else {
-            fragment.getPictureDownloaderThread().queuePicture(holder.coverSmall, imgUrl);
+            fragment.getPictureDownloaderThread().queuePicture(holder, imgUrl);
         }
+        holder.coverSmall.setVisibility(isPictureDownloaded?View.VISIBLE:View.GONE);
+        holder.progressBar.setVisibility(isPictureDownloaded?View.GONE:View.VISIBLE);
 
         return view;
     }
@@ -87,8 +92,9 @@ public class ArtistsAdapter extends BaseAdapter {
                 albumsNumber, context.getString(R.string.abc_albums), tracksNumber, context.getString(R.string.abc_tracks));
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
         public ImageView coverSmall;
+        public ProgressBar progressBar;
         public TextView name;
         public TextView genres;
         public TextView songNumber;

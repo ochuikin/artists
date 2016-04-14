@@ -15,7 +15,7 @@ import serversyncdemo.olegbabichev.com.artists.model.Artist;
 /**
  * Created by olegchuikin on 13/04/16.
  */
-public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, Void> {
+public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>> {
 
     private final String url;
     private List<Artist> artists;
@@ -28,7 +28,7 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected List<Artist> doInBackground(Void... params) {
 
         try {
             String stringJson = new HttpDownloader().getUrlString(url);
@@ -37,18 +37,18 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, Void> {
             artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {
             }.getType());
             Log.i("", "parsed");
+            return artists;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("", "Error in downloading data", e);
+            return null;
         }
-
-        return null;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(List<Artist> result) {
+        super.onPostExecute(result);
 
-        observer.handleChangingData(artists);
+        observer.handleChangingData(result);
     }
 }

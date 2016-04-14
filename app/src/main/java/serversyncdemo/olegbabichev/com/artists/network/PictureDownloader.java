@@ -80,11 +80,11 @@ public class PictureDownloader<Token> extends HandlerThread {
             Log.i("Picture downloader", "PictureDownloader picture downloaded");
 
             //todo del later, imitation slow internet ^_^
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             BitmapsStorage.data.put(url, bitMap);
             responseHandler.post(new Runnable() {

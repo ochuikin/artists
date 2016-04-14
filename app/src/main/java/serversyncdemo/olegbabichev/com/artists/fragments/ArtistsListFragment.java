@@ -9,18 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.MainActivity;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.adapters.ArtistsAdapter;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 import serversyncdemo.olegbabichev.com.artists.network.HttpDownloaderAsyncTask;
 import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
+
+import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.*;
+import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.LOADED;
 
 /**
  * Created by obabichev 13/04/16.
@@ -30,14 +32,23 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     private ListView artistsListView;
 
     private List<Artist> artists;
+    private Button reloadDataButton;
 
-    private PictureDownloader<ImageView> pictureDownloaderThread;
+    private PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloaderThread;
 
     private final AdapterView.OnItemClickListener onListViewItemClickListener = new AdapterView.OnItemClickListener() {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             applyFragment(ArtistDetailsFragment.create(ArtistsListFragment.this, (Artist) artistsListView.getAdapter().getItem(position)));
+        }
+    };
+
+    private final View.OnClickListener reloadDataOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switchState(LOADING);
+            new HttpDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, ArtistsListFragment.this).execute();
         }
     };
 
@@ -54,11 +65,13 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
         pictureDownloaderThread.start();
         pictureDownloaderThread.getLooper();
-        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ImageView>() {
+        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ArtistsAdapter.ViewHolder>() {
             @Override
-            public void onPictureDownloaded(ImageView imageView, Bitmap picture) {
-                if (imageView != null && picture != null) {
-                    imageView.setImageBitmap(picture);
+            public void onPictureDownloaded(ArtistsAdapter.ViewHolder holder, Bitmap picture) {
+                if (holder != null && picture != null) {
+                    holder.coverSmall.setImageBitmap(picture);
+                    holder.coverSmall.setVisibility(View.VISIBLE);
+                    holder.progressBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -71,6 +84,8 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         View result = inflater.inflate(R.layout.artists_list_fragment, container, false);
 
         artistsListView = (ListView) result.findViewById(R.id.artists_list_view);
+        reloadDataButton = (Button) result.findViewById(R.id.reloadDataButton);
+        reloadDataButton.setOnClickListener(reloadDataOnClickListener);
 
         return result;
     }
@@ -85,8 +100,10 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     private void setupAdapter() {
         if (getActivity() == null || artistsListView == null) return;
         if (artists != null) {
+            switchState(LOADED);
             artistsListView.setAdapter(new ArtistsAdapter(this, artists));
             artistsListView.setOnItemClickListener(onListViewItemClickListener);
+            Log.i("", "JSON downloaded");
         } else {
             artistsListView.setAdapter(null);
         }
@@ -99,8 +116,12 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
     @Override
     public void handleChangingData(List<Artist> newData) {
-        this.artists = newData;
-        setupAdapter();
+        if (newData != null) {
+            this.artists = newData;
+            setupAdapter();
+        } else {
+            switchState(ERROR);
+        }
     }
 
     @Override
@@ -113,7 +134,19 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         pictureDownloaderThread.clearQueue();
     }
 
-    public PictureDownloader<ImageView> getPictureDownloaderThread() {
+    public PictureDownloader<ArtistsAdapter.ViewHolder> getPictureDownloaderThread() {
         return pictureDownloaderThread;
+    }
+
+    public enum FragmentState {
+        LOADED,
+        LOADING,
+        ERROR
+    }
+
+    private void switchState(FragmentState state) {
+        findViewById(R.id.loaded).setVisibility((state.equals(LOADED) ? View.VISIBLE : View.GONE));
+        findViewById(R.id.loading).setVisibility((state.equals(LOADING) ? View.VISIBLE : View.GONE));
+        findViewById(R.id.error).setVisibility((state.equals(ERROR) ? View.VISIBLE : View.GONE));
     }
 }
