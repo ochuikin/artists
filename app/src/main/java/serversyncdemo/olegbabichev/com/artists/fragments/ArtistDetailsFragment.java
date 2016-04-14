@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import serversyncdemo.olegbabichev.com.artists.R;
@@ -52,14 +51,6 @@ public class ArtistDetailsFragment extends BaseFragment {
                 artist.getAlbums(), context.getString(R.string.abc_albums),
                 artist.getTracks(), context.getString(R.string.abc_tracks)));
         description.setText(artist.getDescription());
-        parent.getPictureDownloaderThread().setListener(new PictureDownloader.Listener<ImageView>() {
-            @Override
-            public void onPictureDownloaded(ImageView imageView, Bitmap picture) {
-                if (isVisible()){
-                    imageView.setImageBitmap(picture);
-                }
-            }
-        });
         parent.getPictureDownloaderThread().queuePicture(coverBig, artist.getCover().getBig());
     }
 

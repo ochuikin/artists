@@ -43,15 +43,6 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     @Override
     public void onResume() {
         super.onResume();
-
-        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ImageView>() {
-            @Override
-            public void onPictureDownloaded(ImageView imageView, Bitmap picture) {
-                if (isVisible()) {
-                    imageView.setImageBitmap(picture);
-                }
-            }
-        });
     }
 
     @Override
@@ -62,6 +53,14 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
         pictureDownloaderThread.start();
         pictureDownloaderThread.getLooper();
+        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ImageView>() {
+            @Override
+            public void onPictureDownloaded(ImageView imageView, Bitmap picture) {
+                if (imageView != null && picture != null) {
+                    imageView.setImageBitmap(picture);
+                }
+            }
+        });
         Log.i("Picture downloader", "PictureDownloader started");
     }
 
