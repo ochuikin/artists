@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class HttpDownloader {
 
-    String getUrl(String urlString) throws IOException {
+    public byte[] getUrlBytes(String urlString) throws IOException {
 
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -29,9 +29,13 @@ public class HttpDownloader {
                 out.write(buffer, 0, bytesRead);
             }
             out.close();
-            return new String(out.toByteArray());
+            return out.toByteArray();
         } finally {
             connection.disconnect();
         }
+    }
+
+    public String getUrlString(String urlString) throws IOException {
+        return new String(getUrlBytes(urlString));
     }
 }

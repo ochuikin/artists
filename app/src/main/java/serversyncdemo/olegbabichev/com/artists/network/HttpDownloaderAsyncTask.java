@@ -31,7 +31,7 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
 
         try {
-            String stringJson = new HttpDownloader().getUrl(url);
+            String stringJson = new HttpDownloader().getUrlString(url);
             Log.i("network", "Downloaded JSON: " + stringJson);
 
             artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {

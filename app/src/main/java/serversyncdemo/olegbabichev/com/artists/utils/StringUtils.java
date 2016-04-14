@@ -8,6 +8,9 @@ import java.util.List;
 public class StringUtils {
 
     public static String join(String delimiter, List<String> strs){
+        if (strs.size() == 0){
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         for (String str : strs) {
             sb.append(str + delimiter);
