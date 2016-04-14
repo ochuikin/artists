@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
@@ -51,7 +53,14 @@ public class ArtistDetailsFragment extends BaseFragment {
                 artist.getAlbums(), context.getString(R.string.abc_albums),
                 artist.getTracks(), context.getString(R.string.abc_tracks)));
         description.setText(artist.getDescription());
-        parent.getPictureDownloaderThread().queuePicture(coverBig, artist.getCover().getBig());
+
+        String imgUrl = artist.getCover().getBig();
+        if (BitmapsStorage.data.containsKey(imgUrl)){
+            coverBig.setImageBitmap(BitmapsStorage.data.get(imgUrl));
+            Log.i("ArtistsAdapter", "Picture already downloaded");
+        } else {
+            parent.getPictureDownloaderThread().queuePicture(coverBig, imgUrl);
+        }
     }
 
     @Override

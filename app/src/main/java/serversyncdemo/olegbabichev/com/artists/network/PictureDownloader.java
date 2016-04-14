@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
+
 /**
  * Created by obabichev on 14/04/16.
  */
@@ -84,6 +86,7 @@ public class PictureDownloader<Token> extends HandlerThread {
 //                e.printStackTrace();
 //            }
 
+            BitmapsStorage.data.put(url, bitMap);
             responseHandler.post(new Runnable() {
                 @Override
                 public void run() {

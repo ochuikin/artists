@@ -1,6 +1,7 @@
 package serversyncdemo.olegbabichev.com.artists.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
@@ -68,7 +70,13 @@ public class ArtistsAdapter extends BaseAdapter {
         holder.genres.setText(StringUtils.join(", ", artist.getGenres()));
         holder.songNumber.setText(tracksNumberFormat(artist.getAlbums(), artist.getTracks()));
 
-        fragment.getPictureDownloaderThread().queuePicture(holder.coverSmall, artist.getCover().getSmall());
+        String imgUrl = artist.getCover().getSmall();
+        if (BitmapsStorage.data.containsKey(imgUrl)){
+            holder.coverSmall.setImageBitmap(BitmapsStorage.data.get(imgUrl));
+            Log.i("ArtistsAdapter", "Picture already downloaded");
+        } else {
+            fragment.getPictureDownloaderThread().queuePicture(holder.coverSmall, imgUrl);
+        }
 
         return view;
     }

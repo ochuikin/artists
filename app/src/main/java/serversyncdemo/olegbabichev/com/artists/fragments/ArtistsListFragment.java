@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.MainActivity;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.adapters.ArtistsAdapter;
