@@ -69,39 +69,33 @@ public class PictureDownloader<Token> extends HandlerThread {
 
     private void handleRequest(final Token token){
 
+        final String url = requestMap.get(token);
+        Bitmap bitMap = null;
         try {
-            final String url = requestMap.get(token);
-
             if (url == null)
                 return;
 
             byte[] bitmapBytes = new HttpDownloader().getUrlBytes(url);
-            final Bitmap bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+            bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             Log.i("Picture downloader", "PictureDownloader picture downloaded");
 
-            //todo del later, imitation slow internet ^_^
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             BitmapsStorage.data.put(url, bitMap);
-            responseHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (requestMap.get(token) == null || !requestMap.get(token).equals(url)){
-                        return;
-                    }
-
-                    requestMap.remove(token);
-                    listener.onPictureDownloaded(token, bitMap);
-                }
-            });
-
         } catch (IOException e) {
             Log.e("Picture downloader", "PictureDownloader Error downloading image", e);
         }
+
+        final Bitmap finalBitMap = bitMap;
+        responseHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (requestMap.get(token) == null || !requestMap.get(token).equals(url)){
+                    return;
+                }
+
+                requestMap.remove(token);
+                listener.onPictureDownloaded(token, finalBitMap);
+            }
+        });
     }
 
     public void clearQueue() {

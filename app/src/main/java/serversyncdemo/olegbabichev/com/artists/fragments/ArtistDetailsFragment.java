@@ -1,6 +1,5 @@
 package serversyncdemo.olegbabichev.com.artists.fragments;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,11 +17,9 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 import serversyncdemo.olegbabichev.com.artists.network.HttpDownloader;
-import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
 import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
 
 /**
@@ -44,14 +41,6 @@ public class ArtistDetailsFragment extends BaseFragment {
         @Override
         protected Bitmap doInBackground(Void... params) {
             try {
-
-                //todo del later, imitation slow internet ^_^
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
                 byte[] bitmapBytes = new HttpDownloader().getUrlBytes(artist.getCover().getBig());
                 final Bitmap bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
                 return bitMap;
@@ -66,7 +55,7 @@ public class ArtistDetailsFragment extends BaseFragment {
             if (bitmap != null) {
                 coverBig.setImageBitmap(bitmap);
             } else {
-                coverBig.setImageResource(R.drawable.big_cover_downloading_faild);
+                coverBig.setImageResource(R.drawable.cover_downloading_faild);
             }
             coverBig.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);

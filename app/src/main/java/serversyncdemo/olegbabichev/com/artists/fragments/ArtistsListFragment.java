@@ -68,10 +68,12 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         pictureDownloaderThread.setListener(new PictureDownloader.Listener<ArtistsAdapter.ViewHolder>() {
             @Override
             public void onPictureDownloaded(ArtistsAdapter.ViewHolder holder, Bitmap picture) {
+                holder.coverSmall.setVisibility(View.VISIBLE);
+                holder.progressBar.setVisibility(View.GONE);
                 if (holder != null && picture != null) {
                     holder.coverSmall.setImageBitmap(picture);
-                    holder.coverSmall.setVisibility(View.VISIBLE);
-                    holder.progressBar.setVisibility(View.GONE);
+                } else {
+                    holder.coverSmall.setImageResource(R.drawable.cover_downloading_faild);
                 }
             }
         });

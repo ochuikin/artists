@@ -16,7 +16,6 @@
             android:layout_height="@dimen/small_cover_size"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/sample_picture"
             android:visibility="gone"/>
 
         <ProgressBar
