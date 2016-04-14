@@ -38,4 +38,15 @@ public class MainActivity extends AppCompatActivity {
     public void finishFragment() {
         getSupportFragmentManager().popBackStack();
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+    }
+
 }

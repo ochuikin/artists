@@ -11,6 +11,7 @@ import java.util.List;
 
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
+import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -59,19 +60,12 @@ public class ArtistsAdapter extends BaseAdapter {
 
         Artist artist = items.get(position);
         holder.name.setText(artist.getName());
-        holder.genres.setText(genresFormat(artist.getGenres()));
+        holder.genres.setText(StringUtils.join(", ", artist.getGenres()));
         holder.songNumber.setText(tracksNumberFormat(artist.getAlbums(), artist.getTracks()));
 
         return view;
     }
 
-    private String genresFormat(List<String> genres) {
-        StringBuilder sb = new StringBuilder();
-        for (String genre : genres) {
-            sb.append(genre + ", ");
-        }
-        return sb.substring(0, sb.length() - 2);
-    }
 
     private String tracksNumberFormat(int albumsNumber, int tracksNumber) {
         return String.format("%d %s, %d %s",
