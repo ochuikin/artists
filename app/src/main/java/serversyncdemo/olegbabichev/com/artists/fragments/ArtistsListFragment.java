@@ -40,7 +40,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            applyFragment(ArtistDetailsFragment.create(ArtistsListFragment.this, (Artist) artistsListView.getAdapter().getItem(position)));
+            applyFragment(ArtistDetailsFragment.create(getActivity(), (Artist) artistsListView.getAdapter().getItem(position)));
         }
     };
 

@@ -1,5 +1,6 @@
 package serversyncdemo.olegbabichev.com.artists.fragments;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import serversyncdemo.olegbabichev.com.artists.MainActivity;
 import serversyncdemo.olegbabichev.com.artists.R;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 import serversyncdemo.olegbabichev.com.artists.network.HttpDownloader;
@@ -27,7 +30,6 @@ import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
  */
 public class ArtistDetailsFragment extends BaseFragment {
 
-    private ArtistsListFragment parent;
     private Context context;
     private Artist artist;
 
@@ -63,6 +65,12 @@ public class ArtistDetailsFragment extends BaseFragment {
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.artist_details_fragment, container, false);
 
@@ -78,6 +86,7 @@ public class ArtistDetailsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        showMenuBackButton(true);
 
         genres.setText(StringUtils.join(", ", artist.getGenres()));
         songNumber.setText(String.format("%d %s  \u00B7  %d %s",
@@ -98,13 +107,15 @@ public class ArtistDetailsFragment extends BaseFragment {
         return artist.getName();
     }
 
-    public static ArtistDetailsFragment create(ArtistsListFragment parent, Artist artist) {
+    public static ArtistDetailsFragment create(Context context, Artist artist) {
         ArtistDetailsFragment fragment = new ArtistDetailsFragment();
         fragment.artist = artist;
-        fragment.context = parent.getActivity();
-        fragment.parent = parent;
+        fragment.context = context;
         return fragment;
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 }

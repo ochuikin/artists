@@ -1,6 +1,7 @@
 package serversyncdemo.olegbabichev.com.artists.fragments;
 
 import android.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import serversyncdemo.olegbabichev.com.artists.MainActivity;
@@ -34,10 +35,18 @@ public abstract class BaseFragment extends Fragment {
         return ma.findViewById(id);
     }
 
+    protected void showMenuBackButton(boolean show){
+        ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(show);
+        }
+    }
+
     @Override
     public void onResume() {
-        getActivity().setTitle(getTitle());
         super.onResume();
+        getActivity().setTitle(getTitle());
+        showMenuBackButton(false);
     }
 
     protected String getTitle() {

@@ -2,7 +2,10 @@ package serversyncdemo.olegbabichev.com.artists;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment;
 import serversyncdemo.olegbabichev.com.artists.fragments.BaseFragment;
@@ -15,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_reply_white_24dp);
+        }
     }
 
     @Override
@@ -49,4 +59,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (getFragmentManager().getBackStackEntryCount() > 1) {
+                    onBackPressed();
+                }
+                break;
+        }
+        return true;
+    }
 }
