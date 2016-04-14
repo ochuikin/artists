@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.MainActivity;
 import serversyncdemo.olegbabichev.com.artists.fragments.ChangingDataObserver;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 
@@ -35,7 +34,8 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, Void> {
             String stringJson = new HttpDownloader().getUrl(url);
             Log.i("network", "Downloaded JSON: " + stringJson);
 
-            artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>(){}.getType());
+            artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {
+            }.getType());
             Log.i("", "parsed");
 
         } catch (IOException e) {

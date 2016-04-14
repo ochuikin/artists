@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -20,13 +19,13 @@ public class HttpDownloader {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             InputStream in = connection.getInputStream();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return null;
             }
 
             int bytesRead = 0;
             byte[] buffer = new byte[1024];
-            while ((bytesRead = in.read(buffer)) > 0){
+            while ((bytesRead = in.read(buffer)) > 0) {
                 out.write(buffer, 0, bytesRead);
             }
             out.close();

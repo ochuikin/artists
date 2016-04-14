@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Singers</string>
+    <string name="abc_albums">albums</string>
+    <string name="abc_tracks">tracks</string>
 </resources>
