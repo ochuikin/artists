@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.obabichev.artists.MainActivity;
@@ -30,7 +31,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
     private ListView artistsListView;
 
-    private List<Artist> artists;
+    private List<Artist> artists = null;
 
     private PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloaderThread;
 
@@ -50,14 +51,13 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     };
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new HttpDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, this).execute();
+
+        if (artists == null) {
+            Log.i(TAG, "Request to download json");
+            new HttpDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, this).execute();
+        }
 
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
         pictureDownloaderThread.start();
@@ -134,5 +134,14 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         findViewById(R.id.loaded).setVisibility((state.equals(LOADED) ? View.VISIBLE : View.GONE));
         findViewById(R.id.loading).setVisibility((state.equals(LOADING) ? View.VISIBLE : View.GONE));
         findViewById(R.id.error).setVisibility((state.equals(ERROR) ? View.VISIBLE : View.GONE));
+    }
+
+    private static class TMPArray implements Serializable{
+
+        public TMPArray(Artist[] data) {
+            this.data = data;
+        }
+
+        public Artist[] data;
     }
 }
