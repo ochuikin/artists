@@ -20,7 +20,8 @@ import com.obabichev.artists.storage.DataStorage;
  */
 public class PictureDownloader<Token> extends HandlerThread {
 
-    private final static String TAG = "PictureDownloader";
+    private final static String TAG = PictureDownloader.class.getSimpleName().toUpperCase();
+
     private static final int MESSAGE_DOWNLOAD = 0;
 
     private Handler handler;
@@ -45,8 +46,6 @@ public class PictureDownloader<Token> extends HandlerThread {
     }
 
     public void queuePicture(Token token, String url) {
-        Log.i("Picture downloader", "PictureDownloader call queuePicture");
-
         requestMap.put(token, url);
         handler.obtainMessage(MESSAGE_DOWNLOAD, token)
                 .sendToTarget();
@@ -61,7 +60,7 @@ public class PictureDownloader<Token> extends HandlerThread {
                 if (msg.what == MESSAGE_DOWNLOAD) {
                     @SuppressWarnings("unchecked")
                     Token token = (Token) msg.obj;
-                    Log.i("Picture downloader", "PictureDownloader request for url: " + requestMap.get(token));
+                    Log.i(TAG, "PictureDownloader request for url: " + requestMap.get(token));
                     handleRequest(token);
                 }
             }
@@ -79,10 +78,10 @@ public class PictureDownloader<Token> extends HandlerThread {
 
             byte[] bitmapBytes = new HttpDownloader().getUrlBytes(url);
             bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-            Log.i("Picture downloader", "PictureDownloader picture downloaded");
+            Log.i(TAG, "PictureDownloader picture downloaded");
 
         } catch (IOException e) {
-            Log.e("Picture downloader", "PictureDownloader Error downloading image", e);
+            Log.e(TAG, "PictureDownloader Error downloading image", e);
         }
 
         dataStorage.put(url, bitMap);

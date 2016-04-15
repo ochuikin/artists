@@ -11,6 +11,8 @@ import com.obabichev.artists.MainActivity;
  */
 public abstract class BaseFragment extends Fragment {
 
+    protected String TAG = getClass().getSimpleName().toUpperCase();
+
     public void applyFragment(BaseFragment baseFragment) {
         MainActivity ma = (MainActivity) getActivity();
         if (ma == null) {

@@ -43,9 +43,10 @@ public class ArtistDetailsFragment extends BaseFragment {
             try {
                 byte[] bitmapBytes = new HttpDownloader().getUrlBytes(artist.getCover().getBig());
                 final Bitmap bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+                Log.i(TAG, "Image downloaded by url: " + artist.getCover().getBig());
                 return bitMap;
             } catch (IOException e) {
-                Log.e("", "Downloading cover failed", e);
+                Log.e(TAG, "Downloading image failed", e);
                 return null;
             }
         }
@@ -61,12 +62,6 @@ public class ArtistDetailsFragment extends BaseFragment {
             progressBar.setVisibility(View.GONE);
         }
     };
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

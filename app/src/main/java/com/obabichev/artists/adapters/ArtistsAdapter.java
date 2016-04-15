@@ -2,6 +2,7 @@ package com.obabichev.artists.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.obabichev.artists.utils.StringUtils;
  * Created by obabichev on 14/04/16.
  */
 public class ArtistsAdapter extends BaseAdapter {
+
+    private final String TAG = getClass().getSimpleName().toUpperCase();
 
     private List<Artist> items;
     private Context context;
@@ -47,8 +50,10 @@ public class ArtistsAdapter extends BaseAdapter {
         holder.progressBar.setVisibility(View.GONE);
         if (picture != null) {
             holder.coverSmall.setImageBitmap(picture);
+            Log.i(TAG, "Image for holder.coverSmall was changed");
         } else {
             holder.coverSmall.setImageResource(R.drawable.cover_downloading_faild);
+            Log.e(TAG, "Image for holder.coverSmall was changed by FailImage");
         }
     }
 
@@ -95,10 +100,12 @@ public class ArtistsAdapter extends BaseAdapter {
         String imageUrl = artist.getCover().getSmall();
         if (dataStorage != null && dataStorage.contains(imageUrl)) {
             setImageToHolder(holder, dataStorage.get(imageUrl));
+            Log.i(TAG, "Image founded in dataStorage");
         } else {
             holder.coverSmall.setVisibility(View.GONE);
             holder.progressBar.setVisibility(View.VISIBLE);
             pictureDownloaderThread.queuePicture(holder, imageUrl);
+            Log.i(TAG, "Image not founded in storage and made request to download it");
         }
 
         return view;

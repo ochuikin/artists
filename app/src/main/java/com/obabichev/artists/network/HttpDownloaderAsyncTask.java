@@ -17,6 +17,8 @@ import com.obabichev.artists.model.Artist;
  */
 public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>> {
 
+    private final String TAG = getClass().getSimpleName().toUpperCase();
+
     private final String url;
 
     private ChangingDataObserver<Artist> observer;
@@ -31,15 +33,19 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>>
 
         try {
             String stringJson = new HttpDownloader().getUrlString(url);
-            Log.i("network", "Downloaded JSON: " + stringJson);
+            Log.i(TAG, "Downloaded JSON: " + stringJson);
 
             List<Artist> artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {
             }.getType());
-            Log.i("", "parsed");
+            if (artists != null) {
+                Log.i(TAG, "JSON was successfully parsed");
+            } else {
+                Log.e(TAG, "JSON parsing failed");
+            }
             return artists;
 
         } catch (IOException e) {
-            Log.e("", "Error in downloading data", e);
+            Log.e(TAG, "Error in downloading data", e);
             return null;
         }
     }

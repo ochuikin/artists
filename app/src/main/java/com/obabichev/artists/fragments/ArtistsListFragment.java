@@ -64,7 +64,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         pictureDownloaderThread.setDataStorage(new LruCacheBitmapStorage());
         pictureDownloaderThread.getLooper();
 
-        Log.i("Picture downloader", "PictureDownloader started");
+        Log.i(TAG, "pictureDownloaderThread started");
     }
 
     @Nullable
@@ -91,9 +91,10 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
             switchState(LOADED);
             artistsListView.setAdapter(new ArtistsAdapter(getActivity(), artists, pictureDownloaderThread));
             artistsListView.setOnItemClickListener(onListViewItemClickListener);
-            Log.i("", "JSON downloaded");
+            Log.i(TAG, "Setup adapter for ArtistsListFragment");
         } else {
             artistsListView.setAdapter(null);
+            Log.i(TAG, "Setup adapter: Artists data is null");
         }
     }
 
@@ -117,7 +118,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         super.onDestroy();
 
         pictureDownloaderThread.quit();
-        Log.i("Picture downloader", "PictureDownloader stopped");
+        Log.i(TAG, "pictureDownloaderThread stopped");
 
         pictureDownloaderThread.clearQueue();
     }
@@ -129,6 +130,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     }
 
     private void switchState(FragmentState state) {
+        Log.i(TAG, "ArtistsListFragment switched state to: " + state);
         findViewById(R.id.loaded).setVisibility((state.equals(LOADED) ? View.VISIBLE : View.GONE));
         findViewById(R.id.loading).setVisibility((state.equals(LOADING) ? View.VISIBLE : View.GONE));
         findViewById(R.id.error).setVisibility((state.equals(ERROR) ? View.VISIBLE : View.GONE));
