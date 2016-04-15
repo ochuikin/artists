@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.storage;
+package com.obabichev.artists.storage;
 
 /**
  * Created by olegchuikin on 15/04/16.

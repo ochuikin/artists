@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.network;
+package com.obabichev.artists.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,8 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.fragments.ChangingDataObserver;
-import serversyncdemo.olegbabichev.com.artists.model.Artist;
+import com.obabichev.artists.fragments.ChangingDataObserver;
+import com.obabichev.artists.model.Artist;
 
 /**
  * Created by olegchuikin on 13/04/16.
@@ -18,7 +18,6 @@ import serversyncdemo.olegbabichev.com.artists.model.Artist;
 public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>> {
 
     private final String url;
-    private List<Artist> artists;
 
     private ChangingDataObserver<Artist> observer;
 
@@ -34,7 +33,7 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>>
             String stringJson = new HttpDownloader().getUrlString(url);
             Log.i("network", "Downloaded JSON: " + stringJson);
 
-            artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {
+            List<Artist> artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {
             }.getType());
             Log.i("", "parsed");
             return artists;

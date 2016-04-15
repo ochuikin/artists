@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists;
+package com.obabichev.artists;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

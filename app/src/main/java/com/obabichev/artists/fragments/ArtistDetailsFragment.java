@@ -1,6 +1,5 @@
-package serversyncdemo.olegbabichev.com.artists.fragments;
+package com.obabichev.artists.fragments;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,11 +18,10 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-import serversyncdemo.olegbabichev.com.artists.MainActivity;
-import serversyncdemo.olegbabichev.com.artists.R;
-import serversyncdemo.olegbabichev.com.artists.model.Artist;
-import serversyncdemo.olegbabichev.com.artists.network.HttpDownloader;
-import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
+import com.obabichev.artists.R;
+import com.obabichev.artists.model.Artist;
+import com.obabichev.artists.network.HttpDownloader;
+import com.obabichev.artists.utils.StringUtils;
 
 /**
  * Created by obabichev on 14/04/16.

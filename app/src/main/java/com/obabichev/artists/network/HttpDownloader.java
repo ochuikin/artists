@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.network;
+package com.obabichev.artists.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class HttpDownloader {
                 return null;
             }
 
-            int bytesRead = 0;
+            int bytesRead;
             byte[] buffer = new byte[1024];
             while ((bytesRead = in.read(buffer)) > 0) {
                 out.write(buffer, 0, bytesRead);

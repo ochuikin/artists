@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.model;
+package com.obabichev.artists.model;
 
 /**
  * Created by olegchuikin on 13/04/16.

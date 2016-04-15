@@ -1,9 +1,8 @@
-package serversyncdemo.olegbabichev.com.artists.network;
+package com.obabichev.artists.network;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.GpsStatus;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
@@ -14,8 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
-import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
+import com.obabichev.artists.storage.DataStorage;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -83,25 +81,12 @@ public class PictureDownloader<Token> extends HandlerThread {
             bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             Log.i("Picture downloader", "PictureDownloader picture downloaded");
 
-            BitmapsStorage.data.put(url, bitMap);
         } catch (IOException e) {
             Log.e("Picture downloader", "PictureDownloader Error downloading image", e);
         }
 
         dataStorage.put(url, bitMap);
         processRespond(token, bitMap, url);
-//        final Bitmap finalBitMap = bitMap;
-//        responseHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (requestMap.get(token) == null || !requestMap.get(token).equals(url)){
-//                    return;
-//                }
-//
-//                requestMap.remove(token);
-//                listener.onPictureDownloaded(token, finalBitMap);
-//            }
-//        });
     }
 
     private void processRespond(final Token token, final Bitmap bitmap, final String url){

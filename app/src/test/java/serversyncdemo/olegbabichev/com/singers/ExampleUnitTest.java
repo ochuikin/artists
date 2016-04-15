@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists;
+package com.obabichev.artists;
 
 import org.junit.Test;
 

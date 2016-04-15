@@ -1,10 +1,10 @@
-package serversyncdemo.olegbabichev.com.artists.fragments;
+package com.obabichev.artists.fragments;
 
 import android.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import serversyncdemo.olegbabichev.com.artists.MainActivity;
+import com.obabichev.artists.MainActivity;
 
 /**
  * Created by obabichev on 13/04/16.

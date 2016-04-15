@@ -1,6 +1,5 @@
-package serversyncdemo.olegbabichev.com.artists.fragments;
+package com.obabichev.artists.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,22 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.MainActivity;
-import serversyncdemo.olegbabichev.com.artists.R;
-import serversyncdemo.olegbabichev.com.artists.adapters.ArtistsAdapter;
-import serversyncdemo.olegbabichev.com.artists.model.Artist;
-import serversyncdemo.olegbabichev.com.artists.network.HttpDownloaderAsyncTask;
-import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
-import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
-import serversyncdemo.olegbabichev.com.artists.storage.LruCacheBitmapStorage;
+import com.obabichev.artists.MainActivity;
+import com.obabichev.artists.R;
+import com.obabichev.artists.adapters.ArtistsAdapter;
+import com.obabichev.artists.model.Artist;
+import com.obabichev.artists.network.HttpDownloaderAsyncTask;
+import com.obabichev.artists.network.PictureDownloader;
+import com.obabichev.artists.storage.LruCacheBitmapStorage;
 
-import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.*;
-import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.LOADED;
+import static com.obabichev.artists.fragments.ArtistsListFragment.FragmentState.*;
+import static com.obabichev.artists.fragments.ArtistsListFragment.FragmentState.LOADED;
 
 /**
  * Created by obabichev 13/04/16.

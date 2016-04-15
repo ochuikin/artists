@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.adapters;
+package com.obabichev.artists.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.R;
-import serversyncdemo.olegbabichev.com.artists.model.Artist;
-import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
-import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
-import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
+import com.obabichev.artists.R;
+import com.obabichev.artists.model.Artist;
+import com.obabichev.artists.network.PictureDownloader;
+import com.obabichev.artists.storage.DataStorage;
+import com.obabichev.artists.utils.StringUtils;
 
 /**
  * Created by obabichev on 14/04/16.

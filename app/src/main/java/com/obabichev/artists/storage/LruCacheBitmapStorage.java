@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.storage;
+package com.obabichev.artists.storage;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

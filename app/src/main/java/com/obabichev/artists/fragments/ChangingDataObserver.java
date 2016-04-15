@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.fragments;
+package com.obabichev.artists.fragments;
 
 import java.util.List;
 

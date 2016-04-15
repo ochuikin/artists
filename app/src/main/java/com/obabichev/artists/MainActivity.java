@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists;
+package com.obabichev.artists;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment;
-import serversyncdemo.olegbabichev.com.artists.fragments.BaseFragment;
+import com.obabichev.artists.fragments.ArtistsListFragment;
+import com.obabichev.artists.fragments.BaseFragment;
 
 public class MainActivity extends AppCompatActivity {
 

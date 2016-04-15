@@ -1,4 +1,4 @@
-package serversyncdemo.olegbabichev.com.artists.utils;
+package com.obabichev.artists.utils;
 
 import java.util.List;
 
