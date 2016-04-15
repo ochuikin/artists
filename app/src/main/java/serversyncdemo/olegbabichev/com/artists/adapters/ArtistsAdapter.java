@@ -1,7 +1,7 @@
 package serversyncdemo.olegbabichev.com.artists.adapters;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
 import serversyncdemo.olegbabichev.com.artists.R;
-import serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
+import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
+import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
 import serversyncdemo.olegbabichev.com.artists.utils.StringUtils;
 
 /**
@@ -25,12 +25,31 @@ public class ArtistsAdapter extends BaseAdapter {
 
     private List<Artist> items;
     private Context context;
-    ArtistsListFragment fragment;
 
-    public ArtistsAdapter(ArtistsListFragment fragment, List<Artist> items) {
-        this.context = fragment.getActivity();
+    private PictureDownloader<ViewHolder> pictureDownloaderThread;
+    private DataStorage<String, Bitmap> dataStorage = null;
+
+    public ArtistsAdapter(Context context, List<Artist> items, PictureDownloader<ViewHolder> pictureDownloaderThread) {
+        this.context = context;
         this.items = items;
-        this.fragment = fragment;
+        this.pictureDownloaderThread = pictureDownloaderThread;
+        this.dataStorage = pictureDownloaderThread.getDataStorage();
+        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ArtistsAdapter.ViewHolder>() {
+            @Override
+            public void onPictureDownloaded(ArtistsAdapter.ViewHolder holder, Bitmap picture) {
+                setImageToHolder(holder, picture);
+            }
+        });
+    }
+
+    private void setImageToHolder(ViewHolder holder, Bitmap picture) {
+        holder.coverSmall.setVisibility(View.VISIBLE);
+        holder.progressBar.setVisibility(View.GONE);
+        if (picture != null) {
+            holder.coverSmall.setImageBitmap(picture);
+        } else {
+            holder.coverSmall.setImageResource(R.drawable.cover_downloading_faild);
+        }
     }
 
     @Override
@@ -54,7 +73,7 @@ public class ArtistsAdapter extends BaseAdapter {
         ViewHolder holder;
         View view = convertView;
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.artist_list_item_layout, null, true);
             holder = new ViewHolder();
             holder.coverSmall = (ImageView) view.findViewById(R.id.artist_cover_small);
@@ -67,22 +86,20 @@ public class ArtistsAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        
+
         Artist artist = items.get(position);
         holder.name.setText(artist.getName());
         holder.genres.setText(StringUtils.join(", ", artist.getGenres()));
         holder.songNumber.setText(tracksNumberFormat(artist.getAlbums(), artist.getTracks()));
 
-        String imgUrl = artist.getCover().getSmall();
-        boolean isPictureDownloaded = BitmapsStorage.data.containsKey(imgUrl);
-        if (isPictureDownloaded){
-            holder.coverSmall.setImageBitmap(BitmapsStorage.data.get(imgUrl));
-            Log.i("ArtistsAdapter", "Picture already downloaded");
+        String imageUrl = artist.getCover().getSmall();
+        if (dataStorage != null && dataStorage.contains(imageUrl)) {
+            setImageToHolder(holder, dataStorage.get(imageUrl));
         } else {
-            fragment.getPictureDownloaderThread().queuePicture(holder, imgUrl);
+            holder.coverSmall.setVisibility(View.GONE);
+            holder.progressBar.setVisibility(View.VISIBLE);
+            pictureDownloaderThread.queuePicture(holder, imageUrl);
         }
-        holder.coverSmall.setVisibility(isPictureDownloaded?View.VISIBLE:View.GONE);
-        holder.progressBar.setVisibility(isPictureDownloaded?View.GONE:View.VISIBLE);
 
         return view;
     }

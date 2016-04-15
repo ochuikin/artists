@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import serversyncdemo.olegbabichev.com.artists.BitmapsStorage;
+import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -29,6 +30,8 @@ public class PictureDownloader<Token> extends HandlerThread {
 
     private Handler responseHandler;
     private Listener<Token> listener;
+
+    private DataStorage<String, Bitmap> dataStorage = null;
 
     public interface Listener<Token>{
         void onPictureDownloaded(Token token, Bitmap picture);
@@ -70,6 +73,7 @@ public class PictureDownloader<Token> extends HandlerThread {
     private void handleRequest(final Token token){
 
         final String url = requestMap.get(token);
+
         Bitmap bitMap = null;
         try {
             if (url == null)
@@ -84,16 +88,32 @@ public class PictureDownloader<Token> extends HandlerThread {
             Log.e("Picture downloader", "PictureDownloader Error downloading image", e);
         }
 
-        final Bitmap finalBitMap = bitMap;
+        dataStorage.put(url, bitMap);
+        processRespond(token, bitMap, url);
+//        final Bitmap finalBitMap = bitMap;
+//        responseHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (requestMap.get(token) == null || !requestMap.get(token).equals(url)){
+//                    return;
+//                }
+//
+//                requestMap.remove(token);
+//                listener.onPictureDownloaded(token, finalBitMap);
+//            }
+//        });
+    }
+
+    private void processRespond(final Token token, final Bitmap bitmap, final String url){
         responseHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (requestMap.get(token) == null || !requestMap.get(token).equals(url)){
+                if (requestMap.get(token) == null || !requestMap.get(token).equals(url)) {
                     return;
                 }
 
                 requestMap.remove(token);
-                listener.onPictureDownloaded(token, finalBitMap);
+                listener.onPictureDownloaded(token, bitmap);
             }
         });
     }
@@ -101,5 +121,13 @@ public class PictureDownloader<Token> extends HandlerThread {
     public void clearQueue() {
         handler.removeMessages(MESSAGE_DOWNLOAD);
         requestMap.clear();
+    }
+
+    public void setDataStorage(DataStorage<String, Bitmap> dataStorage) {
+        this.dataStorage = dataStorage;
+    }
+
+    public DataStorage<String, Bitmap> getDataStorage() {
+        return dataStorage;
     }
 }

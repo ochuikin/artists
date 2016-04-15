@@ -20,6 +20,8 @@ import serversyncdemo.olegbabichev.com.artists.adapters.ArtistsAdapter;
 import serversyncdemo.olegbabichev.com.artists.model.Artist;
 import serversyncdemo.olegbabichev.com.artists.network.HttpDownloaderAsyncTask;
 import serversyncdemo.olegbabichev.com.artists.network.PictureDownloader;
+import serversyncdemo.olegbabichev.com.artists.storage.DataStorage;
+import serversyncdemo.olegbabichev.com.artists.storage.LruCacheBitmapStorage;
 
 import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.*;
 import static serversyncdemo.olegbabichev.com.artists.fragments.ArtistsListFragment.FragmentState.LOADED;
@@ -32,12 +34,10 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     private ListView artistsListView;
 
     private List<Artist> artists;
-    private Button reloadDataButton;
 
     private PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloaderThread;
 
     private final AdapterView.OnItemClickListener onListViewItemClickListener = new AdapterView.OnItemClickListener() {
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             applyFragment(ArtistDetailsFragment.create(getActivity(), (Artist) artistsListView.getAdapter().getItem(position)));
@@ -64,19 +64,9 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
         pictureDownloaderThread.start();
+        pictureDownloaderThread.setDataStorage(new LruCacheBitmapStorage());
         pictureDownloaderThread.getLooper();
-        pictureDownloaderThread.setListener(new PictureDownloader.Listener<ArtistsAdapter.ViewHolder>() {
-            @Override
-            public void onPictureDownloaded(ArtistsAdapter.ViewHolder holder, Bitmap picture) {
-                holder.coverSmall.setVisibility(View.VISIBLE);
-                holder.progressBar.setVisibility(View.GONE);
-                if (holder != null && picture != null) {
-                    holder.coverSmall.setImageBitmap(picture);
-                } else {
-                    holder.coverSmall.setImageResource(R.drawable.cover_downloading_faild);
-                }
-            }
-        });
+
         Log.i("Picture downloader", "PictureDownloader started");
     }
 
@@ -86,8 +76,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         View result = inflater.inflate(R.layout.artists_list_fragment, container, false);
 
         artistsListView = (ListView) result.findViewById(R.id.artists_list_view);
-        reloadDataButton = (Button) result.findViewById(R.id.reloadDataButton);
-        reloadDataButton.setOnClickListener(reloadDataOnClickListener);
+        result.findViewById(R.id.reloadDataButton).setOnClickListener(reloadDataOnClickListener);
 
         return result;
     }
@@ -103,7 +92,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         if (getActivity() == null || artistsListView == null) return;
         if (artists != null) {
             switchState(LOADED);
-            artistsListView.setAdapter(new ArtistsAdapter(this, artists));
+            artistsListView.setAdapter(new ArtistsAdapter(getActivity(), artists, pictureDownloaderThread));
             artistsListView.setOnItemClickListener(onListViewItemClickListener);
             Log.i("", "JSON downloaded");
         } else {
@@ -134,10 +123,6 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         Log.i("Picture downloader", "PictureDownloader stopped");
 
         pictureDownloaderThread.clearQueue();
-    }
-
-    public PictureDownloader<ArtistsAdapter.ViewHolder> getPictureDownloaderThread() {
-        return pictureDownloaderThread;
     }
 
     public enum FragmentState {
