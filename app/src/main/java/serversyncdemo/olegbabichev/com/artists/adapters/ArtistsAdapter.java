@@ -67,6 +67,7 @@ public class ArtistsAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
+        
         Artist artist = items.get(position);
         holder.name.setText(artist.getName());
         holder.genres.setText(StringUtils.join(", ", artist.getGenres()));
