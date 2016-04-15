@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.obabichev.artists.MainActivity;
@@ -38,7 +37,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     private final AdapterView.OnItemClickListener onListViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            applyFragment(ArtistDetailsFragment.create(getActivity(), (Artist) artistsListView.getAdapter().getItem(position)));
+            applyFragment(ArtistDetailsFragment.create((Artist) artistsListView.getAdapter().getItem(position)));
         }
     };
 
@@ -53,6 +52,8 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
 
         if (artists == null) {
             Log.i(TAG, "Request to download json");
@@ -134,14 +135,5 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         findViewById(R.id.loaded).setVisibility((state.equals(LOADED) ? View.VISIBLE : View.GONE));
         findViewById(R.id.loading).setVisibility((state.equals(LOADING) ? View.VISIBLE : View.GONE));
         findViewById(R.id.error).setVisibility((state.equals(ERROR) ? View.VISIBLE : View.GONE));
-    }
-
-    private static class TMPArray implements Serializable{
-
-        public TMPArray(Artist[] data) {
-            this.data = data;
-        }
-
-        public Artist[] data;
     }
 }

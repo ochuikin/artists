@@ -1,11 +1,12 @@
 package com.obabichev.artists.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by olegchuikin on 13/04/16.
  */
-public class Artist {
+public class Artist implements Serializable {
 
     private long id;
     private String name;

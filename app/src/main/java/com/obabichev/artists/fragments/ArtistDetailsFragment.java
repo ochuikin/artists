@@ -31,6 +31,8 @@ public class ArtistDetailsFragment extends BaseFragment {
     private Context context;
     private Artist artist;
 
+    private Bitmap cover = null;
+
     private ImageView coverBig;
     private ProgressBar progressBar;
     private TextView genres;
@@ -53,25 +55,48 @@ public class ArtistDetailsFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            cover = bitmap;
             if (bitmap != null) {
                 coverBig.setImageBitmap(bitmap);
             } else {
                 coverBig.setImageResource(R.drawable.cover_downloading_faild);
             }
-            coverBig.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            swithLoaded(true);
         }
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View result = inflater.inflate(R.layout.artist_details_fragment, container, false);
+
+        context = getActivity();
 
         coverBig = (ImageView) result.findViewById(R.id.artist_cover_big);
         progressBar = (ProgressBar) result.findViewById(R.id.progress_bar);
         genres = (TextView) result.findViewById(R.id.artist_genres);
         songNumber = (TextView) result.findViewById(R.id.track_number);
         description = (TextView) result.findViewById(R.id.artist_description);
+
+        if (!downloadCover.getStatus().equals(AsyncTask.Status.FINISHED)){
+            swithLoaded(false);
+            downloadCover.execute();
+        } else {
+            swithLoaded(true);
+            if (cover != null) {
+                coverBig.setImageBitmap(cover);
+            } else {
+                coverBig.setImageResource(R.drawable.cover_downloading_faild);
+            }
+        }
 
         return result;
     }
@@ -92,7 +117,6 @@ public class ArtistDetailsFragment extends BaseFragment {
         int width = displaymetrics.widthPixels;
         progressBar.setLayoutParams(new LinearLayout.LayoutParams(width, width));
 
-        downloadCover.execute();
     }
 
     @Override
@@ -100,15 +124,24 @@ public class ArtistDetailsFragment extends BaseFragment {
         return artist.getName();
     }
 
-    public static ArtistDetailsFragment create(Context context, Artist artist) {
+    public static ArtistDetailsFragment create(Artist artist) {
         ArtistDetailsFragment fragment = new ArtistDetailsFragment();
         fragment.artist = artist;
-        fragment.context = context;
         return fragment;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void swithLoaded(boolean isLoaded){
+        coverBig.setVisibility(isLoaded?View.VISIBLE:View.GONE);
+        progressBar.setVisibility(isLoaded?View.GONE:View.VISIBLE);
     }
 }

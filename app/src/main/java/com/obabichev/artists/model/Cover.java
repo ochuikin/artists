@@ -1,10 +1,12 @@
 package com.obabichev.artists.model;
 
 
+import java.io.Serializable;
+
 /**
  * Created by olegchuikin on 13/04/16.
  */
-public class Cover {
+public class Cover implements Serializable{
     private String small;
     private String big;
 
