@@ -13,6 +13,8 @@ public class BaseTest extends ActivityInstrumentationTestCase2<MainActivity> {
         super(MainActivity.class);
     }
 
+    protected int WAIT_TIMEOUT = 5_000;
+
     protected Solo solo;
 
     @Override
@@ -27,5 +29,13 @@ public class BaseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     protected String getString(int id) {
         return getActivity().getString(id);
+    }
+
+    protected void waitText(int id) {
+        waitText(getString(id));
+    }
+
+    protected void waitText(String text) {
+        assertTrue(solo.waitForText(text, 0, WAIT_TIMEOUT));
     }
 }

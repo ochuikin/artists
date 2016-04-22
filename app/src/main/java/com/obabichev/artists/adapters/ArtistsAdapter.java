@@ -124,4 +124,12 @@ public class ArtistsAdapter extends BaseAdapter {
         public TextView genres;
         public TextView songNumber;
     }
+
+    public void setItems(List<Artist> items) {
+        this.items = items;
+    }
+
+    public List<Artist> getItems() {
+        return items;
+    }
 }
