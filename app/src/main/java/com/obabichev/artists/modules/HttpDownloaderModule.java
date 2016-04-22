@@ -1,4 +1,7 @@
-package com.obabichev.artists.network;
+package com.obabichev.artists.modules;
+
+import com.obabichev.artists.network.HttpDownloader;
+import com.obabichev.artists.network.HttpDownloaderImpl;
 
 import javax.inject.Singleton;
 

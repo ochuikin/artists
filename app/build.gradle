@@ -11,6 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
     }
     buildTypes {
         release {
@@ -28,4 +29,10 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0'
     compile files('libs/gson-2.3.1.jar')
     compile 'javax.annotation:jsr250-api:1.0'
+
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.5.3'
+    androidTestCompile('com.android.support:multidex-instrumentation:1.0.1') {
+        exclude group: 'com.android.support', module: 'multidex'
+    }
+    compile 'com.android.support:multidex:1.0.1@aar'
 }
