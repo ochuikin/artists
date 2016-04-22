@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import com.obabichev.artists.App;
 import com.obabichev.artists.R;
 import com.obabichev.artists.model.Artist;
 import com.obabichev.artists.network.PictureDownloader;
 import com.obabichev.artists.storage.DataStorage;
 import com.obabichev.artists.utils.StringUtils;
+
+import javax.inject.Inject;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -27,13 +30,16 @@ public class ArtistsAdapter extends BaseAdapter {
     private final String TAG = getClass().getSimpleName().toUpperCase();
 
     private List<Artist> items;
-    private Context context;
+
+    @Inject
+    Context context;
 
     private PictureDownloader<ViewHolder> pictureDownloaderThread;
     private DataStorage<String, Bitmap> dataStorage = null;
 
-    public ArtistsAdapter(Context context, List<Artist> items, PictureDownloader<ViewHolder> pictureDownloaderThread) {
-        this.context = context;
+    public ArtistsAdapter(List<Artist> items, PictureDownloader<ViewHolder> pictureDownloaderThread) {
+        App.getComponent().inject(this);
+
         this.items = items;
         this.pictureDownloaderThread = pictureDownloaderThread;
         this.dataStorage = pictureDownloaderThread.getDataStorage();
@@ -123,10 +129,6 @@ public class ArtistsAdapter extends BaseAdapter {
         public TextView name;
         public TextView genres;
         public TextView songNumber;
-    }
-
-    public void setItems(List<Artist> items) {
-        this.items = items;
     }
 
     public List<Artist> getItems() {

@@ -2,8 +2,9 @@ package com.obabichev.artists;
 
 import android.app.Application;
 
-import com.obabichev.artists.components.AppComponent;
-import com.obabichev.artists.components.DaggerAppComponent;
+import com.obabichev.artists.di.components.AppComponent;
+import com.obabichev.artists.di.components.DaggerAppComponent;
+import com.obabichev.artists.di.modules.AppModule;
 import com.obabichev.artists.network.HttpDownloaderModule;
 
 /**
@@ -20,6 +21,7 @@ public class App extends Application {
         component = DaggerAppComponent
                 .builder()
                 .httpDownloaderModule(new HttpDownloaderModule())
+                .appModule(new AppModule(this))
                 .build();
     }
 

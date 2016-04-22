@@ -1,5 +1,6 @@
 package com.obabichev.artists.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -21,6 +22,8 @@ import com.obabichev.artists.network.HttpDownloaderAsyncTask;
 import com.obabichev.artists.network.PictureDownloader;
 import com.obabichev.artists.storage.LruCacheBitmapStorage;
 
+import javax.inject.Inject;
+
 import static com.obabichev.artists.fragments.ArtistsListFragment.FragmentState.*;
 import static com.obabichev.artists.fragments.ArtistsListFragment.FragmentState.LOADED;
 
@@ -32,6 +35,9 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     private ListView artistsListView;
 
     private List<Artist> artists = null;
+
+    @Inject
+    Context context;
 
     private PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloaderThread;
 
@@ -53,6 +59,8 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        App.getComponent().inject(this);
 
         setRetainInstance(true);
 
@@ -89,10 +97,10 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     }
 
     private void setupAdapter() {
-        if (getActivity() == null || artistsListView == null) return;
+        if (artistsListView == null) return;
         if (artists != null) {
             switchState(LOADED);
-            artistsListView.setAdapter(new ArtistsAdapter(getActivity(), artists, pictureDownloaderThread));
+            artistsListView.setAdapter(new ArtistsAdapter(artists, pictureDownloaderThread));
             artistsListView.setOnItemClickListener(onListViewItemClickListener);
             Log.i(TAG, "Setup adapter for ArtistsListFragment");
         } else {
@@ -103,7 +111,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
     @Override
     protected String getTitle() {
-        return getActivity().getString(R.string.artists_list_fragment_title);
+        return context.getString(R.string.artists_list_fragment_title);
     }
 
     @Override

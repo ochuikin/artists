@@ -31,9 +31,7 @@ import javax.inject.Inject;
  */
 public class ArtistDetailsFragment extends BaseFragment {
 
-    private Context context;
     private Artist artist;
-
     private Bitmap cover = null;
 
     private ImageView coverBig;
@@ -44,6 +42,9 @@ public class ArtistDetailsFragment extends BaseFragment {
 
     @Inject
     HttpDownloader httpDownloader;
+
+    @Inject
+    Context context;
 
     private final AsyncTask<Void, Void, Bitmap> downloadCover = new AsyncTask<Void, Void, Bitmap>() {
         @Override
@@ -86,15 +87,13 @@ public class ArtistDetailsFragment extends BaseFragment {
 
         View result = inflater.inflate(R.layout.artist_details_fragment, container, false);
 
-        context = getActivity();
-
         coverBig = (ImageView) result.findViewById(R.id.artist_cover_big);
         progressBar = (ProgressBar) result.findViewById(R.id.progress_bar);
         genres = (TextView) result.findViewById(R.id.artist_genres);
         songNumber = (TextView) result.findViewById(R.id.track_number);
         description = (TextView) result.findViewById(R.id.artist_description);
 
-        if (!downloadCover.getStatus().equals(AsyncTask.Status.FINISHED)){
+        if (!downloadCover.getStatus().equals(AsyncTask.Status.FINISHED)) {
             swithLoaded(false);
             downloadCover.execute();
         } else {
@@ -148,8 +147,8 @@ public class ArtistDetailsFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void swithLoaded(boolean isLoaded){
-        coverBig.setVisibility(isLoaded?View.VISIBLE:View.GONE);
-        progressBar.setVisibility(isLoaded?View.GONE:View.VISIBLE);
+    private void swithLoaded(boolean isLoaded) {
+        coverBig.setVisibility(isLoaded ? View.VISIBLE : View.GONE);
+        progressBar.setVisibility(isLoaded ? View.GONE : View.VISIBLE);
     }
 }

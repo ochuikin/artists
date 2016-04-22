@@ -1,7 +1,9 @@
-package com.obabichev.artists.components;
+package com.obabichev.artists.di.components;
 
 import com.obabichev.artists.adapters.ArtistsAdapter;
+import com.obabichev.artists.di.modules.AppModule;
 import com.obabichev.artists.fragments.ArtistDetailsFragment;
+import com.obabichev.artists.fragments.ArtistsListFragment;
 import com.obabichev.artists.network.HttpDownloaderAsyncTask;
 import com.obabichev.artists.network.HttpDownloaderModule;
 import com.obabichev.artists.network.PictureDownloader;
@@ -14,7 +16,7 @@ import dagger.Component;
  * Created by obabichev on 22/04/16.
  */
 
-@Component(modules = {HttpDownloaderModule.class})
+@Component(modules = {HttpDownloaderModule.class, AppModule.class})
 @Singleton
 public interface AppComponent {
 
@@ -24,4 +26,7 @@ public interface AppComponent {
 
     void inject(PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloader);
 
+    void inject(ArtistsAdapter artistsAdapter);
+
+    void inject(ArtistsListFragment artistsListFragment);
 }

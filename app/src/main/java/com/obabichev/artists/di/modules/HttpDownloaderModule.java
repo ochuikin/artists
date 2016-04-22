@@ -1,4 +1,4 @@
-package com.obabichev.artists.modules;
+package com.obabichev.artists.di.modules;
 
 import com.obabichev.artists.network.HttpDownloader;
 import com.obabichev.artists.network.HttpDownloaderImpl;
