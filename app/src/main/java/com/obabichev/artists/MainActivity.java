@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (getFragmentManager().getBackStackEntryCount() == 0){
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
             applyFragment(new ArtistsListFragment());
         }
     }

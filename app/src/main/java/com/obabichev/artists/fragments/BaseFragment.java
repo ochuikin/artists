@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import com.obabichev.artists.MainActivity;
+import com.obabichev.artists.components.AppComponent;
 
 /**
  * Created by obabichev on 13/04/16.

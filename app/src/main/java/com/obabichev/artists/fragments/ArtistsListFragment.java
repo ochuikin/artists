@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import com.obabichev.artists.App;
 import com.obabichev.artists.MainActivity;
 import com.obabichev.artists.R;
 import com.obabichev.artists.adapters.ArtistsAdapter;
@@ -61,6 +62,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         }
 
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
+        App.getComponent().inject(pictureDownloaderThread);
         pictureDownloaderThread.start();
         pictureDownloaderThread.setDataStorage(new LruCacheBitmapStorage());
         pictureDownloaderThread.getLooper();

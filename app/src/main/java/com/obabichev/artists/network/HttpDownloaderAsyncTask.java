@@ -9,8 +9,11 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.List;
 
+import com.obabichev.artists.App;
 import com.obabichev.artists.fragments.ChangingDataObserver;
 import com.obabichev.artists.model.Artist;
+
+import javax.inject.Inject;
 
 /**
  * Created by olegchuikin on 13/04/16.
@@ -23,16 +26,21 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>>
 
     private ChangingDataObserver<Artist> observer;
 
+    @Inject
+    HttpDownloader httpDownloader;
+
     public HttpDownloaderAsyncTask(String url, ChangingDataObserver<Artist> observer) {
         this.observer = observer;
         this.url = url;
+
+        App.getComponent().inject(this);
     }
 
     @Override
     protected List<Artist> doInBackground(Void... params) {
 
         try {
-            String stringJson = new HttpDownloader().getUrlString(url);
+            String stringJson = httpDownloader.getUrlString(url);
             Log.i(TAG, "Downloaded JSON: " + stringJson);
 
             List<Artist> artists = new Gson().fromJson(stringJson, new TypeToken<List<Artist>>() {

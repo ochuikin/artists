@@ -13,7 +13,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.obabichev.artists.App;
+import com.obabichev.artists.adapters.ArtistsAdapter;
 import com.obabichev.artists.storage.DataStorage;
+
+import javax.inject.Inject;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -31,6 +35,9 @@ public class PictureDownloader<Token> extends HandlerThread {
     private Listener<Token> listener;
 
     private DataStorage<String, Bitmap> dataStorage = null;
+
+    @Inject
+    HttpDownloader httpDownloader;
 
     public interface Listener<Token>{
         void onPictureDownloaded(Token token, Bitmap picture);
@@ -76,7 +83,7 @@ public class PictureDownloader<Token> extends HandlerThread {
             if (url == null)
                 return;
 
-            byte[] bitmapBytes = new HttpDownloader().getUrlBytes(url);
+            byte[] bitmapBytes = httpDownloader.getUrlBytes(url);
             bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             Log.i(TAG, "PictureDownloader picture downloaded");
 

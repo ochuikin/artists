@@ -18,10 +18,13 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import com.obabichev.artists.App;
 import com.obabichev.artists.R;
 import com.obabichev.artists.model.Artist;
 import com.obabichev.artists.network.HttpDownloader;
 import com.obabichev.artists.utils.StringUtils;
+
+import javax.inject.Inject;
 
 /**
  * Created by obabichev on 14/04/16.
@@ -39,11 +42,14 @@ public class ArtistDetailsFragment extends BaseFragment {
     private TextView songNumber;
     private TextView description;
 
+    @Inject
+    HttpDownloader httpDownloader;
+
     private final AsyncTask<Void, Void, Bitmap> downloadCover = new AsyncTask<Void, Void, Bitmap>() {
         @Override
         protected Bitmap doInBackground(Void... params) {
             try {
-                byte[] bitmapBytes = new HttpDownloader().getUrlBytes(artist.getCover().getBig());
+                byte[] bitmapBytes = httpDownloader.getUrlBytes(artist.getCover().getBig());
                 final Bitmap bitMap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
                 Log.i(TAG, "Image downloaded by url: " + artist.getCover().getBig());
                 return bitMap;
@@ -70,6 +76,8 @@ public class ArtistDetailsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
+
+        App.getComponent().inject(this);
     }
 
     @Override
