@@ -16,9 +16,13 @@ import com.obabichev.artists.model.Artist;
 import javax.inject.Inject;
 
 /**
- * Created by olegchuikin on 13/04/16.
+ * It is for downloading json with artists.
+ * <p/>
+ * For handling downloaded artists ChangingDataObserver is used.
+ * <p/>
+ * Created by obabichev on 13/04/16.
  */
-public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>> {
+public class HttpJsonArtistsDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>> {
 
     private final String TAG = getClass().getSimpleName().toUpperCase();
 
@@ -29,7 +33,7 @@ public class HttpDownloaderAsyncTask extends AsyncTask<Void, Void, List<Artist>>
     @Inject
     HttpDownloader httpDownloader;
 
-    public HttpDownloaderAsyncTask(String url, ChangingDataObserver<Artist> observer) {
+    public HttpJsonArtistsDownloaderAsyncTask(String url, ChangingDataObserver<Artist> observer) {
         this.observer = observer;
         this.url = url;
 

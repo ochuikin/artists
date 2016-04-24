@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Singers</string>
+    <string name="app_name">Artists</string>
     <string name="abc_albums">albums</string>
     <string name="abc_tracks">tracks</string>
     <string name="abc_biography">Biography</string>

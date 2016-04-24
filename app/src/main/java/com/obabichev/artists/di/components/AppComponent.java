@@ -2,10 +2,10 @@ package com.obabichev.artists.di.components;
 
 import com.obabichev.artists.adapters.ArtistsAdapter;
 import com.obabichev.artists.di.modules.AppModule;
+import com.obabichev.artists.di.modules.HttpDownloaderModule;
 import com.obabichev.artists.fragments.ArtistDetailsFragment;
 import com.obabichev.artists.fragments.ArtistsListFragment;
-import com.obabichev.artists.network.HttpDownloaderAsyncTask;
-import com.obabichev.artists.network.HttpDownloaderModule;
+import com.obabichev.artists.network.HttpJsonArtistsDownloaderAsyncTask;
 import com.obabichev.artists.network.PictureDownloader;
 
 import javax.inject.Singleton;
@@ -22,7 +22,7 @@ public interface AppComponent {
 
     void inject(ArtistDetailsFragment artistDetailsFragment);
 
-    void inject(HttpDownloaderAsyncTask httpDownloaderAsyncTask);
+    void inject(HttpJsonArtistsDownloaderAsyncTask httpDownloaderAsyncTask);
 
     void inject(PictureDownloader<ArtistsAdapter.ViewHolder> pictureDownloader);
 

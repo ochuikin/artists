@@ -10,6 +10,11 @@ import android.view.MenuItem;
 import com.obabichev.artists.fragments.ArtistsListFragment;
 import com.obabichev.artists.fragments.BaseFragment;
 
+/**
+ * I use fragments to show data on the screen.
+ * <p/>
+ * Methods for opening new fragment and closing fragment are available from BaseFragment.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String JSON_ARTISTS_URL = "http://download.cdn.yandex.net/mobilization-2016/artists.json";
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //if there isn't started fragments start ArtistsListFragment
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             applyFragment(new ArtistsListFragment());
         }

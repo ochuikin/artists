@@ -46,6 +46,9 @@ public class ArtistDetailsFragment extends BaseFragment {
     @Inject
     Context context;
 
+    /**
+     * In the detail screen I will download pictures using AsyncTask and will not save it
+     */
     private final AsyncTask<Void, Void, Bitmap> downloadCover = new AsyncTask<Void, Void, Bitmap>() {
         @Override
         protected Bitmap doInBackground(Void... params) {
@@ -68,7 +71,7 @@ public class ArtistDetailsFragment extends BaseFragment {
             } else {
                 coverBig.setImageResource(R.drawable.cover_downloading_faild);
             }
-            swithLoaded(true);
+            switchLoaded(true);
         }
     };
 
@@ -94,10 +97,10 @@ public class ArtistDetailsFragment extends BaseFragment {
         description = (TextView) result.findViewById(R.id.artist_description);
 
         if (!downloadCover.getStatus().equals(AsyncTask.Status.FINISHED)) {
-            swithLoaded(false);
+            switchLoaded(false);
             downloadCover.execute();
         } else {
-            swithLoaded(true);
+            switchLoaded(true);
             if (cover != null) {
                 coverBig.setImageBitmap(cover);
             } else {
@@ -138,16 +141,11 @@ public class ArtistDetailsFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
 
-    private void swithLoaded(boolean isLoaded) {
+    private void switchLoaded(boolean isLoaded) {
         coverBig.setVisibility(isLoaded ? View.VISIBLE : View.GONE);
         progressBar.setVisibility(isLoaded ? View.GONE : View.VISIBLE);
     }

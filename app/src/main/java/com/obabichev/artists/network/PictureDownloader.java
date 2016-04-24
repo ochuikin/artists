@@ -20,6 +20,12 @@ import com.obabichev.artists.storage.DataStorage;
 import javax.inject.Inject;
 
 /**
+ * It is used for downloading pictures.
+ * <p/>
+ * You can set listener for handling downloaded messages
+ * <p/>
+ * Also you can associate with downloader data storage for saving images
+ * <p/>
  * Created by obabichev on 14/04/16.
  */
 public class PictureDownloader<Token> extends HandlerThread {
@@ -39,7 +45,7 @@ public class PictureDownloader<Token> extends HandlerThread {
     @Inject
     HttpDownloader httpDownloader;
 
-    public interface Listener<Token>{
+    public interface Listener<Token> {
         void onPictureDownloaded(Token token, Bitmap picture);
     }
 
@@ -74,7 +80,7 @@ public class PictureDownloader<Token> extends HandlerThread {
         };
     }
 
-    private void handleRequest(final Token token){
+    private void handleRequest(final Token token) {
 
         final String url = requestMap.get(token);
 
@@ -95,7 +101,7 @@ public class PictureDownloader<Token> extends HandlerThread {
         processRespond(token, bitMap, url);
     }
 
-    private void processRespond(final Token token, final Bitmap bitmap, final String url){
+    private void processRespond(final Token token, final Bitmap bitmap, final String url) {
         responseHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +110,9 @@ public class PictureDownloader<Token> extends HandlerThread {
                 }
 
                 requestMap.remove(token);
-                listener.onPictureDownloaded(token, bitmap);
+                if (listener != null) {
+                    listener.onPictureDownloaded(token, bitmap);
+                }
             }
         });
     }

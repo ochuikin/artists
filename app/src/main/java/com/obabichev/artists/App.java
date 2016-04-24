@@ -5,7 +5,7 @@ import android.app.Application;
 import com.obabichev.artists.di.components.AppComponent;
 import com.obabichev.artists.di.components.DaggerAppComponent;
 import com.obabichev.artists.di.modules.AppModule;
-import com.obabichev.artists.network.HttpDownloaderModule;
+import com.obabichev.artists.di.modules.HttpDownloaderModule;
 
 /**
  * Created by obabichev on 22/04/16.
@@ -18,6 +18,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //Component for Dagger injections,
+        //I inject context and http downloader everywhere
         component = DaggerAppComponent
                 .builder()
                 .httpDownloaderModule(new HttpDownloaderModule())

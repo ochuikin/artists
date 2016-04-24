@@ -18,7 +18,7 @@ import com.obabichev.artists.MainActivity;
 import com.obabichev.artists.R;
 import com.obabichev.artists.adapters.ArtistsAdapter;
 import com.obabichev.artists.model.Artist;
-import com.obabichev.artists.network.HttpDownloaderAsyncTask;
+import com.obabichev.artists.network.HttpJsonArtistsDownloaderAsyncTask;
 import com.obabichev.artists.network.PictureDownloader;
 import com.obabichev.artists.storage.LruCacheBitmapStorage;
 
@@ -52,7 +52,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
         @Override
         public void onClick(View v) {
             switchState(LOADING);
-            new HttpDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, ArtistsListFragment.this).execute();
+            new HttpJsonArtistsDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, ArtistsListFragment.this).execute();
         }
     };
 
@@ -66,9 +66,10 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
 
         if (artists == null) {
             Log.i(TAG, "Request to download json");
-            new HttpDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, this).execute();
+            new HttpJsonArtistsDownloaderAsyncTask(MainActivity.JSON_ARTISTS_URL, this).execute();
         }
 
+        //init and start picture downloader, creating LruCache with 1/8 of available ram
         pictureDownloaderThread = new PictureDownloader<>(new Handler());
         App.getComponent().inject(pictureDownloaderThread);
         pictureDownloaderThread.start();
@@ -128,6 +129,7 @@ public class ArtistsListFragment extends BaseFragment implements ChangingDataObs
     public void onDestroy() {
         super.onDestroy();
 
+        //stop picture downloader
         pictureDownloaderThread.quit();
         Log.i(TAG, "pictureDownloaderThread stopped");
 
